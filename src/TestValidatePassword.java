@@ -19,32 +19,37 @@ public class TestValidatePassword {
 	
 	@Test
 	public void nullString(){
-		assertSame("Should be Invalid", "Invalid Password\n", ValidatePassword.validate(null, null));
+		assertSame("Should be Invalid", "Invalid Password. Need a Password\n", ValidatePassword.validate(null, null));
 		
 	}
 	
 	@Test
 	public void emptyString(){
-		assertSame("Should be Invalid", "Invalid Password\n", ValidatePassword.validate("", ""));
+		assertSame("Should be Invalid", "Invalid Password. Need a Password\n", ValidatePassword.validate("", ""));
 	}
 	
 	@Test
 	public void differentStrings(){
-		assertSame("Should be Invalid", "Invalid Password\n", ValidatePassword.validate("abcdefadjfndj", "riidnidjfidjfdf"));
+		assertSame("Should be Invalid", "Invalid Password. Passwords don't match.\n", ValidatePassword.validate("abcdefadjfndj", "riidnidjfidjfdf"));
+	}
+	
+	@Test
+	public void differentStringsWithNumbers(){
+		assertSame("Should be Invalid", "Invalid Password. Passwords don't match.\n", ValidatePassword.validate("abcdefadjfndj2", "riidnid3jfidjfdf"));
 	}
 	
 	@Test
 	public void tooShort(){
-		assertSame("Should be Invalid", "Invalid Password\n", ValidatePassword.validate("fdfd", "fdfd"));
+		assertSame("Should be Invalid", "Invalid Password. Need 7 characters with at least one number\n", ValidatePassword.validate("fdfd", "fdfd"));
 	}
 	@Test
 	public void noNumbers(){
-		assertSame("Should be Invalid", "Invalid Password\n", ValidatePassword.validate("asdfghij", "asdfghij"));
+		assertSame("Should be Invalid", "Invalid Password. No Numbers.", ValidatePassword.validate("asdfghij", "asdfghij"));
 	}
 	
 	@Test
 	public void allNumbers(){
-		assertSame("Should be Invalid", "Invalid Password\n", ValidatePassword.validate("123456789", "123456789"));
+		assertSame("Should be Invalid", "Invalid Password. Can't be all numbers.\n", ValidatePassword.validate("123456789", "123456789"));
 	}
 	
 	@Test
@@ -55,12 +60,12 @@ public class TestValidatePassword {
 			b.append(Integer.toString(r.nextInt()));
 		}
 		String i = b.toString();
-		assertSame("Should be Invalid", "Invalid Password\n", ValidatePassword.validate(i, i));
+		assertSame("Should be Invalid", "Invalid Password. Too Long.\n", ValidatePassword.validate(i, i));
 	}
 	@Test
 	public void oneShort(){
 		String i = "1asdf";
-		assertSame("Should be Invalid", "Invalid Password\n", ValidatePassword.validate(i, i));	
+		assertSame("Should be Invalid", "Invalid Password. Need 7 characters with at least one number\n", ValidatePassword.validate(i, i));	
 	}
 	
 	@Test
@@ -72,7 +77,7 @@ public class TestValidatePassword {
 		}
 		b.setLength(101);
 		String i = b.toString();
-		assertSame("Should be Invalid", "Invalid Password\n", ValidatePassword.validate(i, i));	
+		assertSame("Should be Invalid", "Invalid Password. Too Long.\n", ValidatePassword.validate(i, i));	
 	}
 	
 	@Test
